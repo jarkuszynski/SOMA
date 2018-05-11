@@ -6,6 +6,7 @@ using System.Text;
 using System.Globalization;
 using System.Threading.Tasks;
 using AwokeKnowing.GnuplotCSharp;
+using SOMA_DATA;
 
 namespace SOMA
 {
@@ -13,52 +14,54 @@ namespace SOMA
     {
         static void Main(string[] args)
         {
-            string path1 = "Test.txt";
-            string fullpath = Path.GetFullPath(path1);
-            double[] x = { -2, 2, 2, -2 };
-            double[] y = { 2, 2, -2, -2 };
-            double[] pointsX = new double[1000];
-            double[] pointsY = new double[1000];
-            Random random = new Random();
-            
-            //Kwadrat
-            /*
-            for (int i = 0; i < 200; i++)
-            {
-                pointsX[i] = ((random.NextDouble() * 3.0));
-                pointsY[i] = (random.NextDouble() * 3.0);
-                Console.WriteLine(pointsX[i] + " " + pointsY[i]);
-            }
-            */
-           
-            // Trojkat
-            /*
-            for (int i = 0; i < 1000; i++)
-            {
-                bool isGood = false;
-                while (!isGood)
-                {
-                    pointsX[i] = ((random.NextDouble() * 4.0) - 2.0);
-                    pointsY[i] = (random.NextDouble() * 4.0 - 2.0);
-                    if (pointsY[i] < pointsX[i] + 2 && pointsY[i] < pointsX[i]* -1.0 + 2 && pointsY[i] > 0)
-                        isGood = true;
-                }
-                Console.WriteLine(pointsX[i] + " " + pointsY[i]);
-            }
-            */
+            double[] pointsX;
+            double[] pointsY;
+            IFigureable figureable;
 
-            GnuPlot.HoldOn();
-           // int xx = -1;
-           // GnuPlot.Plot(x, y, "with linespoints");
-           // GnuPlot.Set("parametric");
-           // GnuPlot.Set("size square");
-           // GnuPlot.Set("trange [0:3]");
-           // GnuPlot.Set($"xrange [{xx}:1]");
-           // GnuPlot.Set("yrange [-1:1]");
-           // GnuPlot.Plot("t + 3,t");
-           // //GnuPlot.Plot("t*2,t + 5");
-           //// GnuPlot.Plot("t*0,t + 5");
-            GnuPlot.Plot(pointsX, pointsY);
+            Console.WriteLine("Samoorganizujaca sie siec neuronowa");
+            Console.WriteLine("Prosze wybrac figure: ");
+            Console.WriteLine("1. Kwadrat");
+            Console.WriteLine("2. Trojkat");
+            Console.WriteLine("3. Kolo");
+            Console.WriteLine("Wybor: ");
+            ConsoleKeyInfo choice = Console.ReadKey();
+            switch (choice.KeyChar)
+            {
+                case '1':
+                    figureable = new Square();
+                    figureable.generatePoints(out pointsX, out pointsY);
+                    GnuPlot.Plot(pointsX, pointsY);
+                    break;
+
+                case '2':
+                    figureable = new Triangle();
+                    figureable.generatePoints(out pointsX, out pointsY);
+                    GnuPlot.Plot(pointsX, pointsY);
+                    break;
+                case '3':
+                    figureable = new Circle();
+                    figureable.generatePoints(out pointsX, out pointsY);
+                    GnuPlot.Plot(pointsX, pointsY);
+                    break;
+                default:
+                    Console.WriteLine("Nie wybrano prawidlowej opcji");
+                    break;
+            }
+
+
+
+            // GnuPlot.HoldOn();
+            // int xx = -1;
+            // GnuPlot.Plot(x, y, "with linespoints");
+            // GnuPlot.Set("parametric");
+            // GnuPlot.Set("size square");
+            // GnuPlot.Set("trange [0:3]");
+            // GnuPlot.Set($"xrange [{xx}:1]");
+            // GnuPlot.Set("yrange [-1:1]");
+            // GnuPlot.Plot("t + 3,t");
+            // //GnuPlot.Plot("t*2,t + 5");
+            //// GnuPlot.Plot("t*0,t + 5");
+            // GnuPlot.Plot(pointsX, pointsY);
 
 
             //kwadrat

@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SOMA_DATA\SOMA_DATA.csproj">
+      <Project>{f12b0cbf-9b63-4028-8326-dc7fae6f88b1}</Project>
+      <Name>SOMA_DATA</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
