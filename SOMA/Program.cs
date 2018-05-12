@@ -14,8 +14,8 @@ namespace SOMA
     {
         static void Main(string[] args)
         {
-            double[] pointsX;
-            double[] pointsY;
+            double[] pointsX = new double[1000];
+            double[] pointsY = new double[1000];
             IFigureable figureable;
 
             Console.WriteLine("Samoorganizujaca sie siec neuronowa");
@@ -47,7 +47,7 @@ namespace SOMA
                     Console.WriteLine("Nie wybrano prawidlowej opcji");
                     break;
             }
-
+            NeuralNetwork neuralNetwork = new NeuralNetwork(pointsX, pointsY, 0.7, 0.0001, 0.75, 100, 1.0);
 
 
             // GnuPlot.HoldOn();

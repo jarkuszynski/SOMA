@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
-    public class Square : IFigureable
+    public class Circle : IFigureable
     {
         public void generatePoints(out double[] pointsX, out double[] pointsY)
         {
@@ -16,8 +16,14 @@ namespace SOMA_DATA
 
             for (int i = 0; i < pointsX.Length; i++)
             {
-                pointsX[i] = ((r.NextDouble() * 3.0));
-                pointsY[i] = (r.NextDouble() * 3.0);
+                bool isGood = false;
+                while (!isGood)
+                {
+                    pointsX[i] = ((r.NextDouble() * 4.0) - 2.0);
+                    pointsY[i] = (r.NextDouble() * 4.0 - 2.0);
+                    if ((pointsX[i] * pointsX[i]) + (pointsY[i] * pointsY[i]) < 4)
+                        isGood = true;
+                }
             }
         }
     }

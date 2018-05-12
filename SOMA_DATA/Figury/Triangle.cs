@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
-    public class Circle : IFigureable
+    public class Triangle : IFigureable
     {
         public void generatePoints(out double[] pointsX, out double[] pointsY)
         {
@@ -21,7 +21,7 @@ namespace SOMA_DATA
                 {
                     pointsX[i] = ((r.NextDouble() * 4.0) - 2.0);
                     pointsY[i] = (r.NextDouble() * 4.0 - 2.0);
-                    if ((pointsX[i] * pointsX[i]) + (pointsY[i] * pointsY[i]) < 1)
+                    if (pointsY[i] < pointsX[i]*2 + 2 && pointsY[i] < pointsX[i] * -2.0 + 2 && pointsY[i] > -2)
                         isGood = true;
                 }
             }
