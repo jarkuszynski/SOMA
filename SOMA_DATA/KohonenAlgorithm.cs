@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AwokeKnowing.GnuplotCSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,16 @@ namespace SOMA_DATA
                     neurons[K].XWeight += neurons[K].LearnRate.current * GFunctionValues[K] * (pointsX[currEpoch] - neurons[K].XWeight);
                     neurons[K].YWeight += neurons[K].LearnRate.current * GFunctionValues[K] * (pointsY[currEpoch] - neurons[K].YWeight);
                 }
+                double[] pointsXEND = new double[200];
+                double[] pointsYEND = new double[200];
+                //ZAPIS EWENTUALNY WAG DO WYKRESU RUCHOMEGO
+                for (int K = 0; K < neurons.Count; K++)
+                {
+                    pointsXEND[K] = neurons[K].XWeight;
+                    pointsYEND[K] = neurons[K].YWeight;
+                }
+                //if(currEpoch % 10 == 0)
+                    //GnuPlot.Plot(pointsXEND, pointsYEND);
 
             }
             return neurons;

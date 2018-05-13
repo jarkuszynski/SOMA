@@ -56,7 +56,7 @@ namespace SOMA
                 pointsXEND[K] = result[K].XWeight;
                 pointsYEND[K] = result[K].YWeight;
             }
-            GnuPlot.Plot(pointsXEND, pointsYEND);
+            //GnuPlot.Plot(pointsXEND, pointsYEND);
             // GnuPlot.HoldOn();
             // int xx = -1;
             // GnuPlot.Plot(x, y, "with linespoints");
