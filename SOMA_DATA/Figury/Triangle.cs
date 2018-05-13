@@ -19,9 +19,9 @@ namespace SOMA_DATA
                 bool isGood = false;
                 while (!isGood)
                 {
-                    pointsX[i] = ((r.NextDouble() * 4.0) - 2.0);
-                    pointsY[i] = (r.NextDouble() * 4.0 - 2.0);
-                    if (pointsY[i] < pointsX[i]*2 + 2 && pointsY[i] < pointsX[i] * -2.0 + 2 && pointsY[i] > -2)
+                    pointsX[i] = ((r.NextDouble() * 20.0) - 10.0);
+                    pointsY[i] = (r.NextDouble() * 20.0 - 10.0);
+                    if (pointsY[i] + 10 < pointsX[i]*2.0 + 20 && pointsY[i] +10 < pointsX[i] * -2.0 + 20 && pointsY[i] > -10)
                         isGood = true;
                 }
             }

@@ -43,6 +43,7 @@
     <Compile Include="Figury\Circle.cs" />
     <Compile Include="Figury\IFigureable.cs" />
     <Compile Include="GnuPlot.cs" />
+    <Compile Include="KohonenAlgorithm.cs" />
     <Compile Include="LearnRate.cs" />
     <Compile Include="NeuralNetwork.cs" />
     <Compile Include="Neuron.cs" />

@@ -15,8 +15,8 @@ namespace SOMA_DATA
 
         public Neuron(Random r, double startingLR, double minimalLR, double minimalP)
         {
-            XWeight = (r.NextDouble() * 4.0) - 2.0;
-            YWeight = (r.NextDouble() * 4.0) - 2.0;
+            XWeight = (r.NextDouble() * 15.0) - 10.0;
+            YWeight = (r.NextDouble() * 15.0) - 10.0;
             LearnRate = new LearnRate
             {
                 starting = startingLR,

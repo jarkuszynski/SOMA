@@ -14,7 +14,7 @@ namespace SOMA_DATA
 
         public void UpdateLearningRate(int currK, int maxK)
         {
-            current = starting * Math.Pow((minimal / starting), (currK / maxK));
+            current = starting * Math.Pow((1.0 * minimal / starting), (1.0 * currK / maxK));
         }
 
     }
