@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
-    class NeuronGas
+    internal class NeuronGas
     {
         public Dictionary<int, Neuron> neurons { get; set; }
         public double[] pointsX { get; set; }
@@ -31,7 +29,7 @@ namespace SOMA_DATA
             int currEpoch = 0;
             while (currEpoch < numberOfEpochs)
             {
-                ShuffleDataSet(pointsX, pointsY, numberOfDataSamples/25);
+                ShuffleDataSet(pointsX, pointsY, numberOfDataSamples / 25);
                 for (int currInPoint = 0; currInPoint < numberOfDataSamples; currInPoint++)        //CALY PROCES NAUKI
                 {
                     double minDistance = double.MaxValue;       //double max
@@ -84,7 +82,6 @@ namespace SOMA_DATA
                             }
                             iterator++;
                         }
-
                     }
                     double[] pointsXEND = new double[neurons.Count];
                     double[] pointsYEND = new double[neurons.Count];

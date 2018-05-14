@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SOMA_DATA
+﻿namespace SOMA_DATA
 {
     public class Potential
     {
@@ -13,7 +7,7 @@ namespace SOMA_DATA
 
         public void UpdateLoserPotential(int numbersOfNeurons)
         {
-            current = current + (1.0/numbersOfNeurons);
+            current = current + (1.0 / numbersOfNeurons);
             if (current > 1)
                 current = 1;
         }

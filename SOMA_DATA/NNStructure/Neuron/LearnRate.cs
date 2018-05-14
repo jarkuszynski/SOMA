@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
@@ -16,6 +12,5 @@ namespace SOMA_DATA
         {
             current = starting * Math.Pow((1.0 * minimal / starting), (1.0 * currK / maxK));
         }
-
     }
 }

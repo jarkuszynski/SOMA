@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using System.Threading.Tasks;
-using AwokeKnowing.GnuplotCSharp;
+﻿using AwokeKnowing.GnuplotCSharp;
 using SOMA_DATA;
+using System;
+using System.IO;
 
 namespace SOMA
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             int numberOfPoints = 1000;
             double[] pointsX = new double[numberOfPoints];
@@ -38,18 +33,19 @@ namespace SOMA
             {
                 case '1':
                     figureable = new Square();
-                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
+                    figureable.generatePoints(out pointsX, out pointsY, numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
 
                 case '2':
                     figureable = new Triangle();
-                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
+                    figureable.generatePoints(out pointsX, out pointsY, numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
+
                 case '3':
                     figureable = new Circle();
-                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
+                    figureable.generatePoints(out pointsX, out pointsY, numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
 
@@ -75,7 +71,7 @@ namespace SOMA
             Console.WriteLine("1. Algorytm Kohonena oparty na gaussowskiej funkji sasiedztwa.");
             Console.WriteLine("2. Algorytm gazu neuronowego.");
             ConsoleKeyInfo choice2 = Console.ReadKey();
-            switch(choice2.KeyChar)
+            switch (choice2.KeyChar)
             {
                 case '1':
                     maxLR = 0.7;
@@ -103,7 +99,7 @@ namespace SOMA
                     NNGasParameters.NGasAlgorithm(numberOfPoints, numberOfEpochs);
                     break;
             }
-            
+
             //GnuPlot.Plot(pointsXEND, pointsYEND);
             // GnuPlot.HoldOn();
             // int xx = -1;
@@ -117,7 +113,6 @@ namespace SOMA
             // //GnuPlot.Plot("t*2,t + 5");
             //// GnuPlot.Plot("t*0,t + 5");
             // GnuPlot.Plot(pointsX, pointsY);
-
 
             //kwadrat
             //GnuPlot.Write("const=3\n");

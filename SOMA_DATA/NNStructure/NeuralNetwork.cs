@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
     public class NeuralNetwork
     {
-        public Dictionary<int,Neuron> neurons { get; set; }
+        public Dictionary<int, Neuron> neurons { get; set; }
         public double[] entriesX { get; set; }
         public double[] entriesY { get; set; }
         public double maxNeighbourhoodRadius { get; set; }
         public double minNeighbourhoodRadius { get; set; }
-        Random random = new Random();
+        private Random random = new Random();
+
         public NeuralNetwork(double[] X, double[] Y, double startLearningRate, double minimalLearningRate, double startPotential, int numberOfNeurons, double maxNeighRadius, double minNeighRadius)
         {
             entriesX = X;
@@ -28,7 +26,7 @@ namespace SOMA_DATA
             }
         }
 
-        public Dictionary<int,Neuron> KohonenAlgorithm(int numberOfDataSamples, int numberOfEpochs)
+        public Dictionary<int, Neuron> KohonenAlgorithm(int numberOfDataSamples, int numberOfEpochs)
         {
             KohonenAlgorithm kohonen = new KohonenAlgorithm(neurons, entriesX, entriesY, maxNeighbourhoodRadius, minNeighbourhoodRadius);
             return kohonen.CalculateNeurons(numberOfDataSamples, numberOfEpochs);

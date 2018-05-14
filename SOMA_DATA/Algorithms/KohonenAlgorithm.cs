@@ -1,22 +1,19 @@
 ﻿using AwokeKnowing.GnuplotCSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
     public class KohonenAlgorithm
     {
-        public Dictionary<int,Neuron> neurons { get; set; }
+        public Dictionary<int, Neuron> neurons { get; set; }
         public double[] pointsX { get; set; }
         public double[] pointsY { get; set; }
         public double maxNeighRadius { get; set; }
         public double minNeighRadius { get; set; }
         public double currentNeighRadius { get; set; }
 
-        public KohonenAlgorithm(Dictionary<int,Neuron> keyValuePairs, double[] X, double[] Y, double maxLambda, double minLambda)
+        public KohonenAlgorithm(Dictionary<int, Neuron> keyValuePairs, double[] X, double[] Y, double maxLambda, double minLambda)
         {
             neurons = new Dictionary<int, Neuron>();
             neurons = keyValuePairs;
@@ -26,7 +23,7 @@ namespace SOMA_DATA
             minNeighRadius = minLambda;
         }
 
-        public Dictionary<int,Neuron> CalculateNeurons(int numberOfDataSamples, int numberOfEpochs)
+        public Dictionary<int, Neuron> CalculateNeurons(int numberOfDataSamples, int numberOfEpochs)
         {
             int currEpoch = 0;
             while (currEpoch < numberOfEpochs)
@@ -91,7 +88,6 @@ namespace SOMA_DATA
                     }
                     if (currInPoint % 10 == 0)
                         GnuPlot.Plot(pointsXEND, pointsYEND);
-
                 }
                 currEpoch++;
             }
@@ -100,7 +96,7 @@ namespace SOMA_DATA
 
         public void UpdateRadius(int currK, int maxK)
         {
-            currentNeighRadius = 1.0 * maxNeighRadius * Math.Pow( (1.0 * minNeighRadius / maxNeighRadius), (1.0 * currK / maxK));
+            currentNeighRadius = 1.0 * maxNeighRadius * Math.Pow((1.0 * minNeighRadius / maxNeighRadius), (1.0 * currK / maxK));
         }
 
         public double EuclideanDistance(int currK, double pointsX, double pointsY)

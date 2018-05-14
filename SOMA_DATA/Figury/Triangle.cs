@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
@@ -21,7 +17,7 @@ namespace SOMA_DATA
                 {
                     pointsX[i] = ((r.NextDouble() * 20.0) - 10.0);
                     pointsY[i] = (r.NextDouble() * 20.0 - 10.0);
-                    if (pointsY[i] + 10 < pointsX[i]*2.0 + 20 && pointsY[i] +10 < pointsX[i] * -2.0 + 20 && pointsY[i] > -10)
+                    if (pointsY[i] + 10 < pointsX[i] * 2.0 + 20 && pointsY[i] + 10 < pointsX[i] * -2.0 + 20 && pointsY[i] > -10)
                         isGood = true;
                 }
             }

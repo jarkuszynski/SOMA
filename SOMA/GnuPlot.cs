@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Linq;
 
 namespace AwokeKnowing.GnuplotCSharp
 {
@@ -35,7 +34,6 @@ namespace AwokeKnowing.GnuplotCSharp
 
         public static void WriteLine(string gnuplotcommands)
         {
-
             GnupStWr.WriteLine(gnuplotcommands);
             GnupStWr.Flush();
         }
@@ -50,7 +48,6 @@ namespace AwokeKnowing.GnuplotCSharp
         {
             for (int i = 0; i < options.Length; i++)
                 GnupStWr.WriteLine("set " + options[i]);
-
         }
 
         public static void Unset(params string[] options)
@@ -192,7 +189,7 @@ namespace AwokeKnowing.GnuplotCSharp
         public static void SPlot(string filenameOrFunction, string options = "")
         {
             if (!Hold) SPlotBuffer.Clear();
-            SPlotBuffer.Add(new StoredPlot(filenameOrFunction, options,PlotTypes.SplotFileOrFunction));
+            SPlotBuffer.Add(new StoredPlot(filenameOrFunction, options, PlotTypes.SplotFileOrFunction));
             SPlot(SPlotBuffer);
         }
         public static void SPlot(int sizeY, double[] z, string options = "")
@@ -216,7 +213,6 @@ namespace AwokeKnowing.GnuplotCSharp
             SPlot(SPlotBuffer);
         }
 
-
         public static void Plot(List<StoredPlot> storedPlots)
         {
             ReplotWithSplot = false;
@@ -237,28 +233,33 @@ namespace AwokeKnowing.GnuplotCSharp
                         else
                             plotstring += (plot + p.Function + " " + p.Options);
                         break;
+
                     case PlotTypes.PlotXY:
                     case PlotTypes.PlotY:
                         plotstring += (plot + @"""-"" " + p.Options);
                         break;
+
                     case PlotTypes.ContourFileOrFunction:
                         contfile = Path.GetTempPath() + "_cntrtempdata" + i + ".dat";
                         makeContourFile((p.File != null ? plotPath(p.File) : p.Function), contfile);
                         if (p.LabelContours) setContourLabels(contfile);
                         plotstring += (plot + plotPath(contfile) + defcntopts + p.Options);
                         break;
+
                     case PlotTypes.ContourXYZ:
                         contfile = Path.GetTempPath() + "_cntrtempdata" + i + ".dat";
                         makeContourFile(p.X, p.Y, p.Z, contfile);
                         if (p.LabelContours) setContourLabels(contfile);
                         plotstring += (plot + plotPath(contfile) + defcntopts + p.Options);
                         break;
+
                     case PlotTypes.ContourZZ:
                         contfile = Path.GetTempPath() + "_cntrtempdata" + i + ".dat";
                         makeContourFile(p.ZZ, contfile);
                         if (p.LabelContours) setContourLabels(contfile);
                         plotstring += (plot + plotPath(contfile) + defcntopts + p.Options);
                         break;
+
                     case PlotTypes.ContourZ:
                         contfile = Path.GetTempPath() + "_cntrtempdata" + i + ".dat";
                         makeContourFile(p.YSize, p.Z, contfile);
@@ -266,17 +267,18 @@ namespace AwokeKnowing.GnuplotCSharp
                         plotstring += (plot + plotPath(contfile) + defcntopts + p.Options);
                         break;
 
-
                     case PlotTypes.ColorMapFileOrFunction:
                         if (p.File != null)
                             plotstring += (plot + plotPath(p.File) + " with image " + p.Options);
                         else
                             plotstring += (plot + p.Function + " with image " + p.Options);
                         break;
+
                     case PlotTypes.ColorMapXYZ:
                     case PlotTypes.ColorMapZ:
                         plotstring += (plot + @"""-"" " + " with image " + p.Options);
                         break;
+
                     case PlotTypes.ColorMapZZ:
                         plotstring += (plot + @"""-"" " + "matrix with image " + p.Options);
                         break;
@@ -294,24 +296,27 @@ namespace AwokeKnowing.GnuplotCSharp
                         WriteData(p.X, p.Y, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.PlotY:
                         WriteData(p.Y, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.ColorMapXYZ:
                         WriteData(p.X, p.Y, p.Z, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.ColorMapZ:
                         WriteData(p.YSize, p.Z, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.ColorMapZZ:
                         WriteData(p.ZZ, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         GnupStWr.WriteLine("e");
                         break;
-                    
                 }
             }
             GnupStWr.Flush();
@@ -336,10 +341,12 @@ namespace AwokeKnowing.GnuplotCSharp
                         else
                             plotstring += (splot + p.Function + defopts + p.Options);
                         break;
+
                     case PlotTypes.SplotXYZ:
                     case PlotTypes.SplotZ:
                         plotstring += (splot + @"""-"" " + defopts + p.Options);
                         break;
+
                     case PlotTypes.SplotZZ:
                         plotstring += (splot + @"""-"" matrix " + defopts + p.Options);
                         break;
@@ -357,11 +364,13 @@ namespace AwokeKnowing.GnuplotCSharp
                         WriteData(p.X, p.Y, p.Z, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.SplotZZ:
                         WriteData(p.ZZ, GnupStWr, false);
                         GnupStWr.WriteLine("e");
                         GnupStWr.WriteLine("e");
                         break;
+
                     case PlotTypes.SplotZ:
                         WriteData(p.YSize, p.Z, GnupStWr, false);
                         GnupStWr.WriteLine("e");
@@ -570,7 +579,6 @@ namespace AwokeKnowing.GnuplotCSharp
         {
             ExtPro.CloseMainWindow();
         }
-
     }
 
     enum PointStyles
@@ -690,8 +698,5 @@ namespace AwokeKnowing.GnuplotCSharp
                 return true;
             return false;
         }
-
     }
-
-
 }
