@@ -49,8 +49,9 @@ namespace SOMA
                     Console.WriteLine("Nie wybrano prawidlowej opcji");
                     break;
             }
-            NeuralNetwork neuralNetwork = new NeuralNetwork(pointsX, pointsY, 0.6, 0.151, 0.75, 40, 0.131, 0.1);
-            var result = neuralNetwork.KohonenAlgorithm();
+            NeuralNetwork neuralNetwork = new NeuralNetwork(pointsX, pointsY, 0.4, 0.03, 0.000001, 200,10.0, 1.0);      //zalezne od potencjalu oraz shuffle danych //NGAS
+            NeuralNetwork neuralNetwork2 = new NeuralNetwork(pointsX, pointsY, 0.8, 0.23, 0.85, 200, 0.0013, 0.00001);      //zalezne od potencjalu oraz shuffle danych Kohonen
+            var result = neuralNetwork.NGasAlgorithm();
             for (int K = 0; K < result.Count; K++)
             {
                 pointsXEND[K] = result[K].XWeight;

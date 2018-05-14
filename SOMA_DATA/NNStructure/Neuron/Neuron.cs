@@ -12,11 +12,13 @@ namespace SOMA_DATA
         public double YWeight { get; set; }
         public LearnRate LearnRate { get; set; }
         public Potential Potential { get; set; }
+        public double distanceFromInputVector { get; set; }
 
         public Neuron(Random r, double startingLR, double minimalLR, double minimalP)
         {
-            XWeight = (r.NextDouble() * 15.0) - 10.0;
-            YWeight = (r.NextDouble() * 15.0) - 10.0;
+            XWeight = (r.NextDouble() * 20.0) - 10.0;
+            YWeight = (r.NextDouble() * 20.0) - 10.0;
+            distanceFromInputVector = new double();
             LearnRate = new LearnRate
             {
                 starting = startingLR,

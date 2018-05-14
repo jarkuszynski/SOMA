@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SOMA_DATA
 {
-    public class KohonenAlgorithm
+    class NeuronGas
     {
-        public Dictionary<int,Neuron> neurons { get; set; }
+        public Dictionary<int, Neuron> neurons { get; set; }
         public double[] pointsX { get; set; }
         public double[] pointsY { get; set; }
         public double maxNeighRadius { get; set; }
         public double minNeighRadius { get; set; }
         public double currentNeighRadius { get; set; }
 
-        public KohonenAlgorithm(Dictionary<int,Neuron> keyValuePairs, double[] X, double[] Y, double maxLambda, double minLambda)
+        public NeuronGas(Dictionary<int, Neuron> keyValuePairs, double[] X, double[] Y, double maxLambda, double minLambda)
         {
             neurons = new Dictionary<int, Neuron>();
             neurons = keyValuePairs;
@@ -26,33 +26,31 @@ namespace SOMA_DATA
             minNeighRadius = minLambda;
         }
 
-        public Dictionary<int,Neuron> CalculateNeurons(int numberOfEpochs)
+        public Dictionary<int, Neuron> CalculateNeurons(int numberOfEpochs)
         {
             int cycle = 0;
             while (cycle <= 5)
             {
-                for (int currEpoch = 0; currEpoch < numberOfEpochs; currEpoch++)        //WHOLE LEARNING PROCESS
+                for (int currEpoch = 0; currEpoch < numberOfEpochs; currEpoch++)        //CALY PROCES NAUKI
                 {
-                    double minDistance = 10000000000;
-                    double currDistance = 0;
+                    double minDistance = 10000000000;       //double max
                     int winnerIndex = new int();
-                    List<int> neighboursOfWinnerNeuron = new List<int>();
                     Dictionary<int, double> GFunctionValues = new Dictionary<int, double>();
-                    UpdateRadius(currEpoch, numberOfEpochs);            //ZAKTUALIZOWANIE LAMBDY
-                    for (int K = 0; K < neurons.Count; K++)         //FIND WINNER NEURON
+                    UpdateRadius(currEpoch, numberOfEpochs);
+                    for (int K = 0; K < neurons.Count; K++)
                     {
                         neurons[K].LearnRate.UpdateLearningRate(currEpoch, numberOfEpochs);
                         if (neurons[K].Potential.current >= neurons[K].Potential.minimal)        //sprawdzenie warunku potencjalu
                         {
-                            currDistance = EuclideanDistance(K, pointsX[currEpoch], pointsY[currEpoch]);
-                            if (currDistance < minDistance)                                      //sprawdzenie czy obecnie wyliczona odleglosc jest mniejsza obecnej najmniejszej
+                            neurons[K].distanceFromInputVector = EuclideanDistance(K, pointsX[currEpoch], pointsY[currEpoch]);
+                            if (neurons[K].distanceFromInputVector < minDistance)                                      //sprawdzenie czy obecnie wyliczona odleglosc jest mniejsza obecnej najmniejszej
                             {
                                 winnerIndex = K;
-                                minDistance = currDistance;
+                                minDistance = neurons[K].distanceFromInputVector;
                             }
                         }
                     }
-                    //ZNALEZIONO ZWYCIESKI NEURON
+                    //NEURON ZWYCIESKI ZNALEZIONY
 
                     //ZAKTUALIZOWANIE POTENCJALU NEURONOW PRZEGRANYCH
                     for (int K = 0; K < neurons.Count; K++)
@@ -64,22 +62,30 @@ namespace SOMA_DATA
                     //ZAKTUALIZOWANIE POTENCJALU NEURONU WYGRANEGO
                     neurons[winnerIndex].Potential.UpdateWinnerPotential();
 
-                    double result = 0;
-                    double nominator = 0;
-                    double denominator = 0;
-                    for (int K = 0; K < neurons.Count; K++)         //WYLICZENIE FUNKCJI G DLA KAZDEGO NEURONU
+                    //POSORTOWANIE NEURONOW OD NAJMNIEJSZEJ ODLEGLOSCI DO NAJWIEKSZEJ OD WEKTORA WEJSCIOWEGO
+                    Dictionary<int, Neuron> sortedNeurons = (neurons.OrderBy(n => n.Value.distanceFromInputVector)).ToDictionary(n => n.Key, n => n.Value);
+
+                    //WYLICZENIE FUNKCJI SASIEDZTWA DLA KAZDEGO NEURONU
+                    for (int K = 0; K < sortedNeurons.Count; K++)
                     {
-                        nominator = EuclideanDistance(winnerIndex, neurons[K].XWeight, neurons[K].YWeight) * EuclideanDistance(winnerIndex, neurons[K].XWeight, neurons[K].YWeight) * 1.0;
-                        denominator = 2 * currentNeighRadius * currentNeighRadius * 1.0;
-                        result = Math.Exp(-1.0 * nominator / denominator * 1.0);
-                        GFunctionValues[K] = result;
+                        GFunctionValues[K] = Math.Exp(-1.0 * (1.0 * K / currentNeighRadius * 1.0));
                     }
-                    //FUNKCJA G WYLICZONA
-                    for (int K = 0; K < neurons.Count; K++)
+
+                    foreach (var neuron in neurons)
                     {
-                        neurons[K].XWeight += neurons[K].LearnRate.current * GFunctionValues[K] * (pointsX[currEpoch] - neurons[K].XWeight);
-                        neurons[K].YWeight += neurons[K].LearnRate.current * GFunctionValues[K] * (pointsY[currEpoch] - neurons[K].YWeight);
+                        int iterator = 0;
+                        foreach (var sortedNeuron in sortedNeurons)
+                        {
+                            if (neuron.Key == sortedNeuron.Key)
+                            {
+                                neuron.Value.XWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsX[currEpoch] - neuron.Value.XWeight);
+                                neuron.Value.YWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsY[currEpoch] - neuron.Value.YWeight);
+                            }
+                            iterator++;
+                        }
+
                     }
+
                     double[] pointsXEND = new double[200];
                     double[] pointsYEND = new double[200];
                     //ZAPIS EWENTUALNY WAG DO WYKRESU RUCHOMEGO
@@ -90,7 +96,6 @@ namespace SOMA_DATA
                     }
                     if (currEpoch % 10 == 0)
                         GnuPlot.Plot(pointsXEND, pointsYEND);
-
                 }
                 cycle++;
             }
@@ -99,7 +104,7 @@ namespace SOMA_DATA
 
         public void UpdateRadius(int currK, int maxK)
         {
-            currentNeighRadius = 1.0 * maxNeighRadius * Math.Pow( (1.0 * minNeighRadius / maxNeighRadius), (1.0 * currK / maxK));
+            currentNeighRadius = 1.0 * maxNeighRadius * Math.Pow((1.0 * minNeighRadius / maxNeighRadius), (1.0 * currK / maxK));
         }
 
         public double EuclideanDistance(int currK, double pointsX, double pointsY)

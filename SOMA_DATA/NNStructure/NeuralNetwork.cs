@@ -33,5 +33,11 @@ namespace SOMA_DATA
             KohonenAlgorithm kohonen = new KohonenAlgorithm(neurons, entriesX, entriesY, maxNeighbourhoodRadius, minNeighbourhoodRadius);
             return kohonen.CalculateNeurons(1000);
         }
+
+        public Dictionary<int, Neuron> NGasAlgorithm()
+        {
+            NeuronGas nGas = new NeuronGas(neurons, entriesX, entriesY, maxNeighbourhoodRadius, minNeighbourhoodRadius);
+            return nGas.CalculateNeurons(1000);
+        }
     }
 }
