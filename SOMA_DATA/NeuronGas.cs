@@ -26,23 +26,24 @@ namespace SOMA_DATA
             minNeighRadius = minLambda;
         }
 
-        public Dictionary<int, Neuron> CalculateNeurons(int numberOfEpochs)
+        public Dictionary<int, Neuron> CalculateNeurons(int numberOfDataSamples, int numberOfEpochs)
         {
-            int cycle = 0;
-            while (cycle <= 5)
+            int currEpoch = 0;
+            while (currEpoch < numberOfEpochs)
             {
-                for (int currEpoch = 0; currEpoch < numberOfEpochs; currEpoch++)        //CALY PROCES NAUKI
+                ShuffleDataSet(pointsX, pointsY, numberOfDataSamples/25);
+                for (int currInPoint = 0; currInPoint < numberOfDataSamples; currInPoint++)        //CALY PROCES NAUKI
                 {
-                    double minDistance = 10000000000;       //double max
+                    double minDistance = double.MaxValue;       //double max
                     int winnerIndex = new int();
                     Dictionary<int, double> GFunctionValues = new Dictionary<int, double>();
-                    UpdateRadius(currEpoch, numberOfEpochs);
+                    UpdateRadius(currInPoint, numberOfDataSamples);
                     for (int K = 0; K < neurons.Count; K++)
                     {
-                        neurons[K].LearnRate.UpdateLearningRate(currEpoch, numberOfEpochs);
+                        neurons[K].LearnRate.UpdateLearningRate(currInPoint, numberOfDataSamples);
                         if (neurons[K].Potential.current >= neurons[K].Potential.minimal)        //sprawdzenie warunku potencjalu
                         {
-                            neurons[K].distanceFromInputVector = EuclideanDistance(K, pointsX[currEpoch], pointsY[currEpoch]);
+                            neurons[K].distanceFromInputVector = EuclideanDistance(K, pointsX[currInPoint], pointsY[currInPoint]);
                             if (neurons[K].distanceFromInputVector < minDistance)                                      //sprawdzenie czy obecnie wyliczona odleglosc jest mniejsza obecnej najmniejszej
                             {
                                 winnerIndex = K;
@@ -78,26 +79,25 @@ namespace SOMA_DATA
                         {
                             if (neuron.Key == sortedNeuron.Key)
                             {
-                                neuron.Value.XWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsX[currEpoch] - neuron.Value.XWeight);
-                                neuron.Value.YWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsY[currEpoch] - neuron.Value.YWeight);
+                                neuron.Value.XWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsX[currInPoint] - neuron.Value.XWeight);
+                                neuron.Value.YWeight += neuron.Value.LearnRate.current * GFunctionValues[iterator] * (pointsY[currInPoint] - neuron.Value.YWeight);
                             }
                             iterator++;
                         }
 
                     }
-
-                    double[] pointsXEND = new double[200];
-                    double[] pointsYEND = new double[200];
+                    double[] pointsXEND = new double[neurons.Count];
+                    double[] pointsYEND = new double[neurons.Count];
                     //ZAPIS EWENTUALNY WAG DO WYKRESU RUCHOMEGO
                     for (int K = 0; K < neurons.Count; K++)
                     {
                         pointsXEND[K] = neurons[K].XWeight;
                         pointsYEND[K] = neurons[K].YWeight;
                     }
-                    if (currEpoch % 10 == 0)
+                    if (currInPoint % 10 == 0)
                         GnuPlot.Plot(pointsXEND, pointsYEND);
                 }
-                cycle++;
+                currEpoch++;
             }
             return neurons;
         }
@@ -113,6 +113,23 @@ namespace SOMA_DATA
             suma = Math.Pow((pointsX - neurons[currK].XWeight), 2) + Math.Pow((pointsY - neurons[currK].YWeight), 2);
             suma = Math.Sqrt(suma);
             return suma;
+        }
+
+        public void ShuffleDataSet(double[] setX, double[] setY, int shuffleNumber)
+        {
+            var randomizer = new Random();
+            int setLength = setX.Length;
+            for (int i = 0; i < shuffleNumber; i++)
+            {
+                int firstIndex = randomizer.Next(setLength);
+                int secondIndex = randomizer.Next(setLength);
+                var tempX = setX[firstIndex];
+                var tempY = setY[firstIndex];
+                setX[firstIndex] = setX[secondIndex];
+                setX[secondIndex] = tempX;
+                setY[firstIndex] = setX[secondIndex];
+                setX[secondIndex] = tempY;
+            }
         }
     }
 }

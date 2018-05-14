@@ -14,10 +14,16 @@ namespace SOMA
     {
         static void Main(string[] args)
         {
-            double[] pointsX = new double[1000];
-            double[] pointsY = new double[1000];
-            double[] pointsXEND = new double[200];
-            double[] pointsYEND = new double[200];
+            int numberOfPoints = 1000;
+            double[] pointsX = new double[numberOfPoints];
+            double[] pointsY = new double[numberOfPoints];
+            double maxLR = new double();
+            double minLR = new double();
+            double maxPotential = new double();
+            int numberOfNeurons = new int();
+            double maxLambda = new double();
+            double minLambda = new double();
+            int numberOfEpochs = new int();
             IFigureable figureable;
 
             Console.WriteLine("Samoorganizujaca sie siec neuronowa");
@@ -25,38 +31,79 @@ namespace SOMA
             Console.WriteLine("1. Kwadrat");
             Console.WriteLine("2. Trojkat");
             Console.WriteLine("3. Kolo");
+            Console.WriteLine("4. Plik testowy");
             Console.WriteLine("Wybor: ");
             ConsoleKeyInfo choice = Console.ReadKey();
             switch (choice.KeyChar)
             {
                 case '1':
                     figureable = new Square();
-                    figureable.generatePoints(out pointsX, out pointsY);
+                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
 
                 case '2':
                     figureable = new Triangle();
-                    figureable.generatePoints(out pointsX, out pointsY);
+                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
                 case '3':
                     figureable = new Circle();
-                    figureable.generatePoints(out pointsX, out pointsY);
+                    figureable.generatePoints(out pointsX, out pointsY,numberOfPoints);
                     GnuPlot.Plot(pointsX, pointsY);
                     break;
+
+                case '4':
+                    string path = "Test.txt";
+                    string fullpath = Path.GetFullPath(path);
+                    StreamReader streamReader = new StreamReader(fullpath);
+                    for (int i = 0; i < numberOfPoints; i++)
+                    {
+                        string sr = streamReader.ReadLine();
+                        string[] parts = sr.Split(',');
+                        pointsX[i] = Convert.ToDouble(parts[0].Replace('.', ','));
+                        pointsY[i] = Convert.ToDouble(parts[1].Replace('.', ','));
+                    }
+                    GnuPlot.Plot(pointsX, pointsY);
+                    break;
+
                 default:
                     Console.WriteLine("Nie wybrano prawidlowej opcji");
                     break;
             }
-            NeuralNetwork neuralNetwork = new NeuralNetwork(pointsX, pointsY, 0.4, 0.03, 0.000001, 200,10.0, 1.0);      //zalezne od potencjalu oraz shuffle danych //NGAS
-            NeuralNetwork neuralNetwork2 = new NeuralNetwork(pointsX, pointsY, 0.8, 0.23, 0.85, 200, 0.0013, 0.00001);      //zalezne od potencjalu oraz shuffle danych Kohonen
-            var result = neuralNetwork.NGasAlgorithm();
-            for (int K = 0; K < result.Count; K++)
+            Console.WriteLine("Prosze wybrac sposob klasyfikacji danych: ");
+            Console.WriteLine("1. Algorytm Kohonena oparty na gaussowskiej funkji sasiedztwa.");
+            Console.WriteLine("2. Algorytm gazu neuronowego.");
+            ConsoleKeyInfo choice2 = Console.ReadKey();
+            switch(choice2.KeyChar)
             {
-                pointsXEND[K] = result[K].XWeight;
-                pointsYEND[K] = result[K].YWeight;
+                case '1':
+                    maxLR = 0.7;
+                    minLR = 0.005;
+                    maxPotential = 0.85;
+                    numberOfNeurons = 200;
+                    maxLambda = 0.0013;
+                    minLambda = 0.001;
+                    numberOfEpochs = 5;
+
+                    NeuralNetwork NNKohonenParameters = new NeuralNetwork(pointsX, pointsY, maxLR, minLR, maxPotential, numberOfNeurons, maxLambda, minLambda);      //zalezne od potencjalu oraz shuffle danych Kohonen
+                    NNKohonenParameters.KohonenAlgorithm(numberOfPoints, numberOfEpochs);
+                    break;
+
+                case '2':
+                    maxLR = 0.6;
+                    minLR = 0.03;
+                    maxPotential = 0.2;
+                    numberOfNeurons = 200;
+                    maxLambda = 10.0;
+                    minLambda = 1.0;
+                    numberOfEpochs = 2;
+
+                    NeuralNetwork NNGasParameters = new NeuralNetwork(pointsX, pointsY, maxLR, minLR, maxPotential, numberOfNeurons, maxLambda, minLambda);      //zalezne od potencjalu oraz shuffle danych //NGAS
+                    NNGasParameters.NGasAlgorithm(numberOfPoints, numberOfEpochs);
+                    break;
             }
+            
             //GnuPlot.Plot(pointsXEND, pointsYEND);
             // GnuPlot.HoldOn();
             // int xx = -1;

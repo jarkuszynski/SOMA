@@ -8,10 +8,10 @@ namespace SOMA_DATA
 {
     public class Triangle : IFigureable
     {
-        public void generatePoints(out double[] pointsX, out double[] pointsY)
+        public void generatePoints(out double[] pointsX, out double[] pointsY, int numberOfPoints)
         {
-            pointsX = new double[1000];
-            pointsY = new double[1000];
+            pointsX = new double[numberOfPoints];
+            pointsY = new double[numberOfPoints];
             Random r = new Random();
 
             for (int i = 0; i < pointsX.Length; i++)

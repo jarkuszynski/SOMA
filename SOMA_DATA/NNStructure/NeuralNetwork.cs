@@ -28,16 +28,16 @@ namespace SOMA_DATA
             }
         }
 
-        public Dictionary<int,Neuron> KohonenAlgorithm()
+        public Dictionary<int,Neuron> KohonenAlgorithm(int numberOfDataSamples, int numberOfEpochs)
         {
             KohonenAlgorithm kohonen = new KohonenAlgorithm(neurons, entriesX, entriesY, maxNeighbourhoodRadius, minNeighbourhoodRadius);
-            return kohonen.CalculateNeurons(1000);
+            return kohonen.CalculateNeurons(numberOfDataSamples, numberOfEpochs);
         }
 
-        public Dictionary<int, Neuron> NGasAlgorithm()
+        public Dictionary<int, Neuron> NGasAlgorithm(int numberOfDataSamples, int numberOfEpochs)
         {
             NeuronGas nGas = new NeuronGas(neurons, entriesX, entriesY, maxNeighbourhoodRadius, minNeighbourhoodRadius);
-            return nGas.CalculateNeurons(1000);
+            return nGas.CalculateNeurons(numberOfDataSamples, numberOfEpochs);
         }
     }
 }

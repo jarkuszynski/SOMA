@@ -8,10 +8,10 @@ namespace SOMA_DATA
 {
     public class Circle : IFigureable
     {
-        public void generatePoints(out double[] pointsX, out double[] pointsY)
+        public void generatePoints(out double[] pointsX, out double[] pointsY, int numberOfPoints)
         {
-            pointsX = new double[1000];
-            pointsY = new double[1000];
+            pointsX = new double[numberOfPoints];
+            pointsY = new double[numberOfPoints];
             Random r = new Random();
 
             for (int i = 0; i < pointsX.Length; i++)
@@ -19,9 +19,9 @@ namespace SOMA_DATA
                 bool isGood = false;
                 while (!isGood)
                 {
-                    pointsX[i] = ((r.NextDouble() * 4.0) - 2.0);
-                    pointsY[i] = (r.NextDouble() * 4.0 - 2.0);
-                    if ((pointsX[i] * pointsX[i]) + (pointsY[i] * pointsY[i]) < 4)
+                    pointsX[i] = ((r.NextDouble() * 20.0) - 10.0);
+                    pointsY[i] = ((r.NextDouble() * 20.0) - 10.0);
+                    if ((pointsX[i] * pointsX[i]) + (pointsY[i] * pointsY[i]) < 100)
                         isGood = true;
                 }
             }
